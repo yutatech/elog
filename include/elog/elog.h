@@ -12,6 +12,11 @@
 #include <stdint.h>
 #include <stdio.h>
 
+/* Include auto-generated configuration */
+#ifdef ELOG_CONFIG_GENERATED
+#include "elog_config.h"
+#endif
+
 #ifdef __cplusplus
 extern "C" {
 #endif

@@ -38,7 +38,9 @@ endif()
 if (NOT DEFINED ELOG_COLOR_TRACE)
     set(ELOG_COLOR_TRACE "\\033[0;37m" CACHE STRING "ANSI color code for TRACE level")
 endif()
-set(ELOG_COLOR_RESET "\\033[0m" CACHE STRING "ANSI color code for RESET")
+if (NOT DEFINED ELOG_COLOR_RESET)
+    set(ELOG_COLOR_RESET "\\033[0m" CACHE STRING "ANSI color code for RESET")
+endif()
 
 # オプション: ログレベルフォーマット設定
 if (NOT DEFINED ELOG_LEVEL_FMT_CRITICAL)
@@ -78,6 +80,7 @@ target_include_directories(elog PUBLIC
 # コンパイル定義の追加
 target_compile_definitions(elog PUBLIC
     ELOG_COMPILED_LEVEL=${ELOG_COMPILED_LEVEL}
+    ELOG_CONFIG_GENERATED
 )
 
 # 実行時ログレベルの設定
@@ -99,33 +102,16 @@ else()
     target_compile_definitions(elog PUBLIC ELOG_USE_COLOR=0)
 endif()
 
-# ソースコードのパスをコンパイルオプションから除外（デバッグ情報の軽量化）
-add_compile_options(-fmacro-prefix-map=${CMAKE_SOURCE_DIR}=)
-
-# カラーコードの定義
-target_compile_options(elog PUBLIC
-    -DELOG_COLOR_CRITICAL="${ELOG_COLOR_CRITICAL}"
-    -DELOG_COLOR_ERROR="${ELOG_COLOR_ERROR}"
-    -DELOG_COLOR_WARN="${ELOG_COLOR_WARN}"
-    -DELOG_COLOR_INFO="${ELOG_COLOR_INFO}"
-    -DELOG_COLOR_DEBUG="${ELOG_COLOR_DEBUG}"
-    -DELOG_COLOR_TRACE="${ELOG_COLOR_TRACE}"
-    -DELOG_COLOR_RESET="${ELOG_COLOR_RESET}"
+# 設定ヘッダーファイルの生成
+configure_file(
+    ${CMAKE_CURRENT_SOURCE_DIR}/elog_config.h.in
+    ${CMAKE_CURRENT_BINARY_DIR}/elog_config.h
+    @ONLY
 )
 
-# ログレベルフォーマットの定義
-target_compile_definitions(elog PUBLIC
-    ELOG_LEVEL_FMT_CRITICAL="${ELOG_LEVEL_FMT_CRITICAL}"
-    ELOG_LEVEL_FMT_ERROR="${ELOG_LEVEL_FMT_ERROR}"
-    ELOG_LEVEL_FMT_WARN="${ELOG_LEVEL_FMT_WARN}"
-    ELOG_LEVEL_FMT_INFO="${ELOG_LEVEL_FMT_INFO}"
-    ELOG_LEVEL_FMT_DEBUG="${ELOG_LEVEL_FMT_DEBUG}"
-    ELOG_LEVEL_FMT_TRACE="${ELOG_LEVEL_FMT_TRACE}"
-)
-
-# ファイル名:行番号フォーマットの定義
-target_compile_definitions(elog PUBLIC
-    ELOG_FILE_LINE_FMT="${ELOG_FILE_LINE_FMT}"
+# 生成された設定ヘッダーのインクルードパスを追加
+target_include_directories(elog PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
 )
 
 # インストール設定（オプション）
