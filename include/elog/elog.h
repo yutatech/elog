@@ -154,7 +154,7 @@ extern volatile uint8_t elog_runtime_level;
 #ifndef ELOG_FILE_LINE_FMT
 #define ELOG_FILE_LINE_FMT "[%s: %d]"
 #endif
-#define ELOG_FILE_LINE_ARGS __FILE__, __LINE__
+#define ELOG_FILE_LINE_ARGS __FILE_NAME__, __LINE__
 #else
 #define ELOG_FILE_LINE_FMT
 #define ELOG_FILE_LINE_ARGS

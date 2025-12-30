@@ -210,7 +210,7 @@ set(ELOG_LEVEL_FMT_DEBUG "DBG:")
 set(ELOG_LEVEL_FMT_TRACE "TRC:")
 
 # File:line format
-set(ELOG_FILE_LINE_FMT "[%-10.10s @ %3d]")
+set(ELOG_FILE_LINE_FMT "[%10.10s @ %3d]")
 ```
 
 ## Advanced Usage
@@ -240,7 +240,7 @@ set(ELOG_USE_RUNTIME_LEVEL ON)
 ```cmake
 # Output: ERR: [    file.c @  23] message
 set(ELOG_LEVEL_FMT_ERROR "ERR:")
-set(ELOG_FILE_LINE_FMT "[%-10.10s @ %3d]")
+set(ELOG_FILE_LINE_FMT "[%10.10s @ %3d]")
 ```
 
 ---
@@ -427,7 +427,7 @@ set(ELOG_LEVEL_FMT_DEBUG "DBG:")
 set(ELOG_LEVEL_FMT_TRACE "TRC:")
 
 # ファイル名:行番号フォーマット
-set(ELOG_FILE_LINE_FMT "[%-10.10s @ %3d]")
+set(ELOG_FILE_LINE_FMT "[%10.10s @ %3d]")
 ```
 
 ## 高度な使い方
@@ -457,7 +457,7 @@ set(ELOG_USE_RUNTIME_LEVEL ON)
 ```cmake
 # Output: ERR: [    file.c @  23] message
 set(ELOG_LEVEL_FMT_ERROR "ERR:")
-set(ELOG_FILE_LINE_FMT "[%-10.10s @ %3d]")
+set(ELOG_FILE_LINE_FMT "[%10.10s @ %3d]")
 ```
 
 ---

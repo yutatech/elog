@@ -20,24 +20,50 @@ option(ELOG_USE_FILE_LINE "Enable file name and line number display in logs" ON)
 option(ELOG_USE_COLOR "Enable ANSI color codes in logs" ON)
 
 # オプション: ANSIカラーコード設定
-set(ELOG_COLOR_CRITICAL "\\033[1;35m" CACHE STRING "ANSI color code for CRITICAL level")
-set(ELOG_COLOR_ERROR "\\033[1;31m" CACHE STRING "ANSI color code for ERROR level")
-set(ELOG_COLOR_WARN "\\033[1;33m" CACHE STRING "ANSI color code for WARN level")
-set(ELOG_COLOR_INFO "\\033[1;32m" CACHE STRING "ANSI color code for INFO level")
-set(ELOG_COLOR_DEBUG "\\033[1;36m" CACHE STRING "ANSI color code for DEBUG level")
-set(ELOG_COLOR_TRACE "\\033[0;37m" CACHE STRING "ANSI color code for TRACE level")
+if (NOT DEFINED ELOG_COLOR_CRITICAL)
+    set(ELOG_COLOR_CRITICAL "\\033[1;35m" CACHE STRING "ANSI color code for CRITICAL level")
+endif()
+if (NOT DEFINED ELOG_COLOR_ERROR)
+    set(ELOG_COLOR_ERROR "\\033[1;31m" CACHE STRING "ANSI color code for ERROR level")
+endif()
+if (NOT DEFINED ELOG_COLOR_WARN)
+    set(ELOG_COLOR_WARN "\\033[1;33m" CACHE STRING "ANSI color code for WARN level")
+endif()
+if (NOT DEFINED ELOG_COLOR_INFO)
+    set(ELOG_COLOR_INFO "\\033[1;32m" CACHE STRING "ANSI color code for INFO level")
+endif()
+if (NOT DEFINED ELOG_COLOR_DEBUG)
+    set(ELOG_COLOR_DEBUG "\\033[1;36m" CACHE STRING "ANSI color code for DEBUG level")
+endif()
+if (NOT DEFINED ELOG_COLOR_TRACE)
+    set(ELOG_COLOR_TRACE "\\033[0;37m" CACHE STRING "ANSI color code for TRACE level")
+endif()
 set(ELOG_COLOR_RESET "\\033[0m" CACHE STRING "ANSI color code for RESET")
 
 # オプション: ログレベルフォーマット設定
-set(ELOG_LEVEL_FMT_CRITICAL "[CRITICAL]" CACHE STRING "Format string for CRITICAL level")
-set(ELOG_LEVEL_FMT_ERROR    "[   ERROR]" CACHE STRING "Format string for ERROR level")
-set(ELOG_LEVEL_FMT_WARN     "[    WARN]" CACHE STRING "Format string for WARN level")
-set(ELOG_LEVEL_FMT_INFO     "[    INFO]" CACHE STRING "Format string for INFO level")
-set(ELOG_LEVEL_FMT_DEBUG    "[   DEBUG]" CACHE STRING "Format string for DEBUG level")
-set(ELOG_LEVEL_FMT_TRACE    "[   TRACE]" CACHE STRING "Format string for TRACE level")
+if (NOT DEFINED ELOG_LEVEL_FMT_CRITICAL)
+    set(ELOG_LEVEL_FMT_CRITICAL "[CRITICAL]" CACHE STRING "Format string for CRITICAL level")
+endif()
+if (NOT DEFINED ELOG_LEVEL_FMT_ERROR)
+    set(ELOG_LEVEL_FMT_ERROR "[   ERROR]" CACHE STRING "Format string for ERROR level")
+endif()
+if (NOT DEFINED ELOG_LEVEL_FMT_WARN)
+    set(ELOG_LEVEL_FMT_WARN "[    WARN]" CACHE STRING "Format string for WARN level")
+endif()
+if (NOT DEFINED ELOG_LEVEL_FMT_INFO)
+    set(ELOG_LEVEL_FMT_INFO "[    INFO]" CACHE STRING "Format string for INFO level")
+endif()
+if (NOT DEFINED ELOG_LEVEL_FMT_DEBUG)
+    set(ELOG_LEVEL_FMT_DEBUG "[   DEBUG]" CACHE STRING "Format string for DEBUG level")
+endif()
+if (NOT DEFINED ELOG_LEVEL_FMT_TRACE)
+    set(ELOG_LEVEL_FMT_TRACE "[   TRACE]" CACHE STRING "Format string for TRACE level")
+endif()
 
 # オプション: ファイル名:行番号フォーマット設定
-set(ELOG_FILE_LINE_FMT "[%s: %d]" CACHE STRING "Prefix for file:line display. Must include %s and %d for file name and line number respectively.")
+if (NOT DEFINED ELOG_FILE_LINE_FMT)
+    set(ELOG_FILE_LINE_FMT "[%s: %d]" CACHE STRING "Prefix for file:line display. Must include %s and %d for file name and line number respectively.")
+endif()
 
 # 静的ライブラリとして定義
 add_library(elog STATIC src/elog.c)
@@ -77,14 +103,14 @@ endif()
 add_compile_options(-fmacro-prefix-map=${CMAKE_SOURCE_DIR}=)
 
 # カラーコードの定義
-target_compile_definitions(elog PUBLIC
-    ELOG_COLOR_CRITICAL="${ELOG_COLOR_CRITICAL}"
-    ELOG_COLOR_ERROR="${ELOG_COLOR_ERROR}"
-    ELOG_COLOR_WARN="${ELOG_COLOR_WARN}"
-    ELOG_COLOR_INFO="${ELOG_COLOR_INFO}"
-    ELOG_COLOR_DEBUG="${ELOG_COLOR_DEBUG}"
-    ELOG_COLOR_TRACE="${ELOG_COLOR_TRACE}"
-    ELOG_COLOR_RESET="${ELOG_COLOR_RESET}"
+target_compile_options(elog PUBLIC
+    -DELOG_COLOR_CRITICAL="${ELOG_COLOR_CRITICAL}"
+    -DELOG_COLOR_ERROR="${ELOG_COLOR_ERROR}"
+    -DELOG_COLOR_WARN="${ELOG_COLOR_WARN}"
+    -DELOG_COLOR_INFO="${ELOG_COLOR_INFO}"
+    -DELOG_COLOR_DEBUG="${ELOG_COLOR_DEBUG}"
+    -DELOG_COLOR_TRACE="${ELOG_COLOR_TRACE}"
+    -DELOG_COLOR_RESET="${ELOG_COLOR_RESET}"
 )
 
 # ログレベルフォーマットの定義
