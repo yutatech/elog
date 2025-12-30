@@ -156,10 +156,10 @@ ELOG_TRACE(fmt, ...)     // Trace/verbose messages
 
 ```c
 // Set runtime log level (only when ELOG_USE_RUNTIME_LEVEL=ON)
-ELOG_SET_LOG_LEVEL(ELOG_LEVEL_DEBUG);
+ELOG_SET_LEVEL(ELOG_LEVEL_DEBUG);       // Using macro
 
 // Get current log level
-uint8_t level = ELOG_GET_LOG_LEVEL();
+uint8_t level = ELOG_GET_LEVEL();       // Using macro
 ```
 
 ### Log Levels
@@ -373,10 +373,10 @@ ELOG_TRACE(fmt, ...)     // トレース/詳細メッセージ
 
 ```c
 // 実行時ログレベルを設定（ELOG_USE_RUNTIME_LEVEL=ON の場合のみ）
-ELOG_SET_LOG_LEVEL(ELOG_LEVEL_DEBUG);
+ELOG_SET_LEVEL(ELOG_LEVEL_DEBUG);       // マクロを使用
 
 // 現在のログレベルを取得
-uint8_t level = ELOG_GET_LOG_LEVEL();
+uint8_t level = ELOG_GET_LEVEL();       // マクロを使用
 ```
 
 ### ログレベル

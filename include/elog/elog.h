@@ -73,6 +73,21 @@ typedef enum {
  * log_level <= elog_runtime_level の場合に出力される
  */
 extern volatile uint8_t elog_runtime_level;
+
+/**
+ * 実行時ログレベルを設定するマクロ
+ * @param level 設定するログレベル (ELOG_LEVEL_OFF ~ ELOG_LEVEL_TRACE)
+ */
+#define ELOG_SET_LEVEL(level) (elog_runtime_level = (level))
+
+/**
+ * 現在の実行時ログレベルを取得するマクロ
+ * @return 現在のログレベル
+ */
+#define ELOG_GET_LEVEL() (elog_runtime_level)
+#else
+#define ELOG_SET_LEVEL(level) ((void)0)
+#define ELOG_GET_LEVEL() (ELOG_COMPILED_LEVEL)
 #endif
 
 /* ============================================================
