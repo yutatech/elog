@@ -1,7 +1,7 @@
 /**
  * @file elog.h
  * @brief elog - Embedded Lightweight Organized Logger
- * 
+ *
  * A fast and lightweight embedded logging library for C/C++.
  * Single-header, printf-based, compile-time optimized logging system.
  */
@@ -9,8 +9,8 @@
 #ifndef ELOG_H
 #define ELOG_H
 
-#include <stdio.h>
 #include <stdint.h>
+#include <stdio.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -21,13 +21,13 @@ extern "C" {
  * ============================================================ */
 
 typedef enum {
-    ELOG_LEVEL_OFF = 0,
-    ELOG_LEVEL_CRITICAL,
-    ELOG_LEVEL_ERROR,
-    ELOG_LEVEL_WARN,
-    ELOG_LEVEL_INFO,
-    ELOG_LEVEL_DEBUG,
-    ELOG_LEVEL_TRACE
+  ELOG_LEVEL_OFF = 0,
+  ELOG_LEVEL_CRITICAL,
+  ELOG_LEVEL_ERROR,
+  ELOG_LEVEL_WARN,
+  ELOG_LEVEL_INFO,
+  ELOG_LEVEL_DEBUG,
+  ELOG_LEVEL_TRACE
 } elog_level_t;
 
 /* ============================================================
@@ -80,31 +80,31 @@ extern volatile uint8_t elog_runtime_level;
  * ============================================================ */
 
 #ifndef ELOG_COLOR_CRITICAL
-#define ELOG_COLOR_CRITICAL "\033[1;35m"  /* Bright Magenta */
+#define ELOG_COLOR_CRITICAL "\033[1;35m" /* Bright Magenta */
 #endif
 
 #ifndef ELOG_COLOR_ERROR
-#define ELOG_COLOR_ERROR    "\033[1;31m"  /* Bright Red */
+#define ELOG_COLOR_ERROR "\033[1;31m" /* Bright Red */
 #endif
 
 #ifndef ELOG_COLOR_WARN
-#define ELOG_COLOR_WARN     "\033[1;33m"  /* Bright Yellow */
+#define ELOG_COLOR_WARN "\033[1;33m" /* Bright Yellow */
 #endif
 
 #ifndef ELOG_COLOR_INFO
-#define ELOG_COLOR_INFO     "\033[1;32m"  /* Bright Green */
+#define ELOG_COLOR_INFO "\033[1;32m" /* Bright Green */
 #endif
 
 #ifndef ELOG_COLOR_DEBUG
-#define ELOG_COLOR_DEBUG    "\033[1;36m"  /* Bright Cyan */
+#define ELOG_COLOR_DEBUG "\033[1;36m" /* Bright Cyan */
 #endif
 
 #ifndef ELOG_COLOR_TRACE
-#define ELOG_COLOR_TRACE    "\033[0;37m"  /* White */
+#define ELOG_COLOR_TRACE "\033[0;37m" /* White */
 #endif
 
 #ifndef ELOG_COLOR_RESET
-#define ELOG_COLOR_RESET    "\033[0m"     /* Reset */
+#define ELOG_COLOR_RESET "\033[0m" /* Reset */
 #endif
 
 /* ============================================================
@@ -160,7 +160,6 @@ extern volatile uint8_t elog_runtime_level;
 #define ELOG_FILE_LINE_ARGS
 #endif
 
-
 /* カラーコードの開始・終了 */
 #if ELOG_USE_COLOR
 #define ELOG_COLOR_BEGIN(color) color
@@ -176,101 +175,109 @@ extern volatile uint8_t elog_runtime_level;
 
 #if ELOG_USE_RUNTIME_LEVEL
 /* 実行時レベル判定あり */
-#define ELOG_IMPL(level, level_str, color, fmt, ...) \
-    do { \
-        if ((level) <= elog_runtime_level) { \
-            printf("%s%s " ELOG_FILE_LINE_FMT " " fmt "%s\n", \
-                   ELOG_COLOR_BEGIN(color), \
-                   level_str, ELOG_FILE_LINE_ARGS, ELOG_COLOR_RESET, ##__VA_ARGS__); \
-            } \
-    } while (0)
+#define ELOG_IMPL(level, level_str, color, fmt, ...)                  \
+  do {                                                                \
+    if ((level) <= elog_runtime_level) {                              \
+      printf("%s%s " ELOG_FILE_LINE_FMT " " fmt "%s\n",               \
+             ELOG_COLOR_BEGIN(color), level_str, ELOG_FILE_LINE_ARGS, \
+             ELOG_COLOR_RESET, ##__VA_ARGS__);                        \
+    }                                                                 \
+  } while (0)
 #else
 /* 実行時レベル判定なし */
-#define ELOG_IMPL(level, level_str, color, fmt, ...) \
-    do { \
-        printf("%s%s " ELOG_FILE_LINE_FMT " " fmt "%s\n", \
-               ELOG_COLOR_BEGIN(color), \
-               level_str, ELOG_FILE_LINE_ARGS, ELOG_COLOR_RESET, ##__VA_ARGS__); \
-    } while (0)
+#define ELOG_IMPL(level, level_str, color, fmt, ...)                           \
+  do {                                                                         \
+    printf("%s%s " ELOG_FILE_LINE_FMT " " fmt "%s\n", ELOG_COLOR_BEGIN(color), \
+           level_str, ELOG_FILE_LINE_ARGS, ELOG_COLOR_RESET, ##__VA_ARGS__);   \
+  } while (0)
 #endif
-
 
 /* CRITICAL */
 #if ELOG_COMPILED_LEVEL >= ELOG_LEVEL_CRITICAL
-#define ELOG_CRITICAL(fmt, ...) \
-    ELOG_IMPL(ELOG_LEVEL_CRITICAL, ELOG_LEVEL_FMT_CRITICAL, ELOG_COLOR_CRITICAL, fmt, ##__VA_ARGS__)
+#define ELOG_CRITICAL(fmt, ...)                                                \
+  ELOG_IMPL(ELOG_LEVEL_CRITICAL, ELOG_LEVEL_FMT_CRITICAL, ELOG_COLOR_CRITICAL, \
+            fmt, ##__VA_ARGS__)
 #else
 #define ELOG_CRITICAL(fmt, ...) ((void)0)
 #endif
 
 /* ERROR */
 #if ELOG_COMPILED_LEVEL >= ELOG_LEVEL_ERROR
-#define ELOG_ERROR(fmt, ...) \
-    ELOG_IMPL(ELOG_LEVEL_ERROR, ELOG_LEVEL_FMT_ERROR, ELOG_COLOR_ERROR, fmt, ##__VA_ARGS__)
+#define ELOG_ERROR(fmt, ...)                                               \
+  ELOG_IMPL(ELOG_LEVEL_ERROR, ELOG_LEVEL_FMT_ERROR, ELOG_COLOR_ERROR, fmt, \
+            ##__VA_ARGS__)
 #else
 #define ELOG_ERROR(fmt, ...) ((void)0)
 #endif
 
 /* WARN */
 #if ELOG_COMPILED_LEVEL >= ELOG_LEVEL_WARN
-#define ELOG_WARN(fmt, ...) \
-    ELOG_IMPL(ELOG_LEVEL_WARN, ELOG_LEVEL_FMT_WARN, ELOG_COLOR_WARN, fmt, ##__VA_ARGS__)
+#define ELOG_WARN(fmt, ...)                                             \
+  ELOG_IMPL(ELOG_LEVEL_WARN, ELOG_LEVEL_FMT_WARN, ELOG_COLOR_WARN, fmt, \
+            ##__VA_ARGS__)
 #else
 #define ELOG_WARN(fmt, ...) ((void)0)
 #endif
 
 /* INFO */
 #if ELOG_COMPILED_LEVEL >= ELOG_LEVEL_INFO
-#define ELOG_INFO(fmt, ...) \
-    ELOG_IMPL(ELOG_LEVEL_INFO, ELOG_LEVEL_FMT_INFO, ELOG_COLOR_INFO, fmt, ##__VA_ARGS__)
+#define ELOG_INFO(fmt, ...)                                             \
+  ELOG_IMPL(ELOG_LEVEL_INFO, ELOG_LEVEL_FMT_INFO, ELOG_COLOR_INFO, fmt, \
+            ##__VA_ARGS__)
 #else
 #define ELOG_INFO(fmt, ...) ((void)0)
 #endif
 
 /* DEBUG */
 #if ELOG_COMPILED_LEVEL >= ELOG_LEVEL_DEBUG
-#define ELOG_DEBUG(fmt, ...) \
-    ELOG_IMPL(ELOG_LEVEL_DEBUG, ELOG_LEVEL_FMT_DEBUG, ELOG_COLOR_DEBUG, fmt, ##__VA_ARGS__)
+#define ELOG_DEBUG(fmt, ...)                                               \
+  ELOG_IMPL(ELOG_LEVEL_DEBUG, ELOG_LEVEL_FMT_DEBUG, ELOG_COLOR_DEBUG, fmt, \
+            ##__VA_ARGS__)
 #else
 #define ELOG_DEBUG(fmt, ...) ((void)0)
 #endif
 
 /* TRACE */
 #if ELOG_COMPILED_LEVEL >= ELOG_LEVEL_TRACE
-#define ELOG_TRACE(fmt, ...) \
-    ELOG_IMPL(ELOG_LEVEL_TRACE, ELOG_LEVEL_FMT_TRACE, ELOG_COLOR_TRACE, fmt, ##__VA_ARGS__)
+#define ELOG_TRACE(fmt, ...)                                               \
+  ELOG_IMPL(ELOG_LEVEL_TRACE, ELOG_LEVEL_FMT_TRACE, ELOG_COLOR_TRACE, fmt, \
+            ##__VA_ARGS__)
 #else
 #define ELOG_TRACE(fmt, ...) ((void)0)
 #endif
 
 /* WARN */
 #if ELOG_COMPILED_LEVEL >= ELOG_LEVEL_WARN
-#define ELOG_WARN(fmt, ...) \
-    ELOG_IMPL(ELOG_LEVEL_WARN, ELOG_LEVEL_FMT_WARN, ELOG_COLOR_WARN, fmt, ##__VA_ARGS__)
+#define ELOG_WARN(fmt, ...)                                             \
+  ELOG_IMPL(ELOG_LEVEL_WARN, ELOG_LEVEL_FMT_WARN, ELOG_COLOR_WARN, fmt, \
+            ##__VA_ARGS__)
 #else
 #define ELOG_WARN(fmt, ...) ((void)0)
 #endif
 
 /* INFO */
 #if ELOG_COMPILED_LEVEL >= ELOG_LEVEL_INFO
-#define ELOG_INFO(fmt, ...) \
-    ELOG_IMPL(ELOG_LEVEL_INFO, ELOG_LEVEL_FMT_INFO, ELOG_COLOR_INFO, fmt, ##__VA_ARGS__)
+#define ELOG_INFO(fmt, ...)                                             \
+  ELOG_IMPL(ELOG_LEVEL_INFO, ELOG_LEVEL_FMT_INFO, ELOG_COLOR_INFO, fmt, \
+            ##__VA_ARGS__)
 #else
 #define ELOG_INFO(fmt, ...) ((void)0)
 #endif
 
 /* DEBUG */
 #if ELOG_COMPILED_LEVEL >= ELOG_LEVEL_DEBUG
-#define ELOG_DEBUG(fmt, ...) \
-    ELOG_IMPL(ELOG_LEVEL_DEBUG, ELOG_LEVEL_FMT_DEBUG, ELOG_COLOR_DEBUG, fmt, ##__VA_ARGS__)
+#define ELOG_DEBUG(fmt, ...)                                               \
+  ELOG_IMPL(ELOG_LEVEL_DEBUG, ELOG_LEVEL_FMT_DEBUG, ELOG_COLOR_DEBUG, fmt, \
+            ##__VA_ARGS__)
 #else
 #define ELOG_DEBUG(fmt, ...) ((void)0)
 #endif
 
 /* TRACE */
 #if ELOG_COMPILED_LEVEL >= ELOG_LEVEL_TRACE
-#define ELOG_TRACE(fmt, ...) \
-    ELOG_IMPL(ELOG_LEVEL_TRACE, ELOG_LEVEL_FMT_TRACE, ELOG_COLOR_TRACE, fmt, ##__VA_ARGS__)
+#define ELOG_TRACE(fmt, ...)                                               \
+  ELOG_IMPL(ELOG_LEVEL_TRACE, ELOG_LEVEL_FMT_TRACE, ELOG_COLOR_TRACE, fmt, \
+            ##__VA_ARGS__)
 #else
 #define ELOG_TRACE(fmt, ...) ((void)0)
 #endif
